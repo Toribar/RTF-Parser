@@ -35,6 +35,8 @@ class DocumentParser
     private function parse($text, array $rules)
     {
         // 1. Create regex pattern for all rules.
+        $pattern = $this->createPattern($rules);
+
         // 2. Extract regex matches.
         // 3. Fill $matches field with found values for each given rule key.
     }
@@ -48,5 +50,40 @@ class DocumentParser
     public function get($key)
     {
         //
+    }
+
+    /**
+     * Here we can build our regex pattern based on rules.
+     *
+     * @param  array $rules
+     * @return string Regex pattern
+     */
+    private function createPattern(array $rules)
+    {
+        // Text can optionally have anything on the begining.
+        $pattern = '.*';
+
+        foreach ($rules as $key => $search) {
+
+            // We need to escape given text to search
+            // before we can use it in regex.
+            // Example "Foo:" => "Foo\:".
+            $escaped = preg_quote($search, '/');
+
+            // Text can optionally contain some white-space
+            // characters between text we search for and value
+            // we want to extract.
+            // Example: "Foo:  bar"
+            $pattern .= '\s*';
+
+            // This is pattern group we want to extract.
+            $pattern .= '(.*)';
+
+            // Pattern needs to ignore new-line characters.
+            $pattern = '/' . $pattern . '/s';
+
+        }
+
+        return $pattern;
     }
 }
