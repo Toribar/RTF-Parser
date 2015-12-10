@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use RTFLex\io\StreamReader;
 use RTFLex\tree\RTFDocument;
 use Illuminate\Http\Request;
+use App\Parsers\DocumentParser;
 use RTFLex\tokenizer\RTFTokenizer;
 use App\Http\Controllers\Controller;
 
@@ -20,6 +21,16 @@ class MainController extends Controller
 
         $text = $document->extractText();
 
-        return $text;
+        $rules = [
+            'order_for' => 'JP BVK Nalog za',
+            'read_date' => 'oèitavanje/proveru Datum:',
+            'issued_by' => 'Nalogodavac:',
+            'campaign_id' => 'ID kampanje:',
+            'reading_number' => 'Ocitavanje br:',
+        ];
+
+        $parser = new DocumentParser($text, $rules);
+
+        return $parser->get('campaign_id');
     }
 }

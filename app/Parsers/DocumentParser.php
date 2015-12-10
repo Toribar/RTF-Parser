@@ -72,11 +72,10 @@ class DocumentParser
         $pattern = '.*';
 
         foreach ($rules as $key => $search) {
-
             // We need to escape given text to search
             // before we can use it in regex.
-            // Example "Foo:" => "Foo\:".
-            $escaped = preg_quote($search, '/');
+            // Example "Foo\Bar" => "Foo\\Bar".
+            $pattern .= preg_quote($search, '/');
 
             // Text can optionally contain some white-space
             // characters between text we search for and value
@@ -86,13 +85,10 @@ class DocumentParser
 
             // This is pattern group we want to extract.
             $pattern .= '(.*)';
-
-            // Pattern needs to ignore new-line characters.
-            $pattern = '/' . $pattern . '/s';
-
         }
 
-        return $pattern;
+        // Pattern needs to ignore new-line characters.
+        return '/' . $pattern . '/s';
     }
 
     /**
@@ -104,9 +100,9 @@ class DocumentParser
      */
     private function extractValues($pattern, $text)
     {
-        $result = [];
+        $results = [];
 
-        preg_match_all($pattern, $text, $result);
+        preg_match_all($pattern, $text, $results);
 
         $values = [];
 
