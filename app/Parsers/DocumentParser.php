@@ -14,7 +14,7 @@ class DocumentParser
      *
      * @var array
      */
-    private $matches = [];
+    private $values = [];
 
     /**
      * Create new parser object.
@@ -38,7 +38,14 @@ class DocumentParser
         $pattern = $this->createPattern($rules);
 
         // 2. Extract regex matches.
+        $values = $this->extractValues($pattern, $text);
+
         // 3. Fill $matches field with found values for each given rule key.
+        $index = 0;
+
+        foreach ($rules as $key => $rule) {
+            $this->values[$key] = $values[$index++];
+        }
     }
 
     /**
@@ -85,5 +92,29 @@ class DocumentParser
         }
 
         return $pattern;
+    }
+
+    /**
+     * Use regex pattern to extract values from text.
+     *
+     * @param  string $pattern Regex pattern.
+     * @param  string $text Text to be parsed.
+     * @return array Array of found values.
+     */
+    private function extractValues($pattern, $text)
+    {
+        $result = [];
+
+        preg_match_all($pattern, $text, $result);
+
+        $values = [];
+
+        if (count($results) > 1) {
+            for ($i = 1; $i < count($results); $i++) {
+                $values[] = $results[$i][0];
+            }
+        }
+
+        return $values;
     }
 }
