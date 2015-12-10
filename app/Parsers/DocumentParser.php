@@ -56,7 +56,8 @@ class DocumentParser
      */
     public function get($key)
     {
-        //
+        // Trim white-space from string before return.
+        return trim(array_get($this->values, $key));
     }
 
     /**
