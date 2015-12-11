@@ -27,10 +27,29 @@ class MainController extends Controller
             'issued_by' => 'Nalogodavac:',
             'campaign_id' => 'ID kampanje:',
             'reading_number' => 'Ocitavanje br:',
+            'charging' => 'NAPLATA',
+            'reon' => 'Reon:',
+            'adress' => 'Ulica:',
+            'number' => 'Broj:',
+            'import' => 'Ulaz:',
+            'costumer' => 'Potrosac:',
+            'idmm' => 'ID mernog mesta:',
+            'id_brojila' => 'ID brojila:',
+            'issue' => 'Stanje brojila:',
+            'idmm_' => ' *',
+            'endless_gliberish_string' => 'Fabricki broj:',
+            
         ];
 
         $parser = new DocumentParser($text, $rules);
 
-        return $parser->get('campaign_id');
+        return view('index', compact('parser'));    
+    }
+
+    public function getUpload()
+    {
+
+        return view('upload');
+
     }
 }
