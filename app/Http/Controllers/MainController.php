@@ -29,7 +29,8 @@ class MainController extends Controller
             'reading_number' => 'Ocitavanje br:',
             'charging' => 'NAPLATA',
             'reon' => 'Reon:',
-            'adress' => 'Ulica:',
+            'place' => 'Ulica:',
+            'street' =>',',
             'number' => 'Broj:',
             'import' => 'Ulaz:',
             'costumer' => 'Potrosac:',
@@ -43,7 +44,7 @@ class MainController extends Controller
 
         $parser = new DocumentParser($text, $rules);
 
-        return view('index', compact('parser'));    
+        return view('index', compact('parser')); 
     }
 
     public function getUpload()

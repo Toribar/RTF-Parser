@@ -11,7 +11,7 @@
 			<th>Ulica</th>
 			<th>Broj</th>
 			<th>Mesto</th>
-			<th>Datum izdavanj naloga</th>
+			<th>Datum izdavanja naloga</th>
 			<th>Sifra naloga</th>
 			<th>Tip naloga</th>
 			<th>Nalog izvrsen?</th>
@@ -23,9 +23,9 @@
 		<td>1</td>
 		<td>{{ $parser->get('idmm') }}</td>
 		<td>{{ $parser->get('costumer') }}</td>
-		<td>{{ $parser->get('adress') }}</td>
+		<td>{{ $parser->get('street') }}</td>
 		<td>{{ $parser->get('number') }}</td>
-		<td>Bela Crkva</td>
+		<td>{{ $parser->get('place') }}</td>
 		<td>{{ $parser->get('read_date') }}</td>
 		<td>{{ $parser->get('idmm') }}</td>
 		<td>{{ $parser->get('issue') }}</td>
