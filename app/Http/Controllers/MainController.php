@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
+use App\Document;
 use RTFLex\io\StreamReader;
 use RTFLex\tree\RTFDocument;
 use Illuminate\Http\Request;
@@ -27,7 +29,7 @@ class MainController extends Controller
 
             $filename = str_replace('.' . $file->getClientOriginalExtension(), null, $file->getClientOriginalName());
 
-            dd($file);
+
 
             $content =  file_get_contents($file);
 
@@ -37,6 +39,52 @@ class MainController extends Controller
             $textForParser = str_replace($search, $replace, $content);
 
             file_put_contents('uploads/sample.rtf', $textForParser);
+
+            $documentPath = public_path('uploads/sample.rtf');
+
+            $reader = new StreamReader($documentPath);
+            $tokenizer = new RTFTokenizer($reader);
+            $document = new RTFDocument($tokenizer);
+
+            $text = $document->extractText();
+
+            $search = array("S~", "D~", "C^", "C~", "Z~", "s~", "d~", "c^", "c~", "z~");
+            $replace = array("Š", "Đ", "Č", "Ć", "Ž", "š", "đ", "č", "ć", "ž");
+
+            $text = str_replace($search, $replace, $text);
+
+
+            $rules = [
+                'order_for' => 'JP BVK Nalog za',
+                'read_date' => 'očitavanje/proveru Datum:',
+                'issued_by' => 'Nalogodavac:',
+                'campaign_id' => 'ID kampanje:',
+                'reading_number' => 'Ocitavanje br:',
+                'charging' => 'NAPLATA',
+                'reon' => 'Reon:',
+                'place' => 'Ulica:',
+                'street' =>',',
+                'number' => 'Broj:',
+                'import' => 'Ulaz:',
+                'costumer' => 'Potrosac:',
+                'idmm' => 'ID mernog mesta:',
+                'id_brojila' => 'ID brojila:',
+                'issue' => 'Stanje brojila:',
+                'idmm_' => ' *',
+                'endless_gliberish_string' => 'Fabricki broj:',
+                
+            ];
+
+            $parser = new DocumentParser($text, $rules);
+
+            Document::create([
+                'idmm' => $parser->get('idmm'),
+                'customer_name' => $parser->get('costumer'),
+                'customer_address' => $parser->get('place'),
+                'filename' => $filename,
+                'issued_on' => Carbon::parse($parser->get('read_date')),
+                'document' => $text,
+            ]);
         }
         return redirect('show');
     }
@@ -44,44 +92,9 @@ class MainController extends Controller
     public function getShow()
     {
 
-        $documentPath = public_path('uploads/sample.rtf');
+        $documents = Document::all();
 
-        $reader = new StreamReader($documentPath);
-        $tokenizer = new RTFTokenizer($reader);
-        $document = new RTFDocument($tokenizer);
-
-        $text = $document->extractText();
-
-        $search = array("S~", "D~", "C^", "C~", "Z~", "s~", "d~", "c^", "c~", "z~");
-        $replace = array("Š", "Đ", "Č", "Ć", "Ž", "š", "đ", "č", "ć", "ž");
-
-        $text = str_replace($search, $replace, $text);
-
-
-        $rules = [
-            'order_for' => 'JP BVK Nalog za',
-            'read_date' => 'očitavanje/proveru Datum:',
-            'issued_by' => 'Nalogodavac:',
-            'campaign_id' => 'ID kampanje:',
-            'reading_number' => 'Ocitavanje br:',
-            'charging' => 'NAPLATA',
-            'reon' => 'Reon:',
-            'place' => 'Ulica:',
-            'street' =>',',
-            'number' => 'Broj:',
-            'import' => 'Ulaz:',
-            'costumer' => 'Potrosac:',
-            'idmm' => 'ID mernog mesta:',
-            'id_brojila' => 'ID brojila:',
-            'issue' => 'Stanje brojila:',
-            'idmm_' => ' *',
-            'endless_gliberish_string' => 'Fabricki broj:',
-            
-        ];
-
-        $parser = new DocumentParser($text, $rules);
-
-        return view('table', compact('parser'));
+        return view('table', compact('documents'));
 
     }
 }
