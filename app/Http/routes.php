@@ -11,4 +11,4 @@
 |
 */
 
-Route::controller('/', 'MainController');
+Route::resource('/', 'MainController');

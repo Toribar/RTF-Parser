@@ -8,11 +8,38 @@ use Illuminate\Http\Request;
 use App\Parsers\DocumentParser;
 use RTFLex\tokenizer\RTFTokenizer;
 use App\Http\Controllers\Controller;
+use Input;
 
 class MainController extends Controller
 {
-    public function getIndex()
+    public function index(Request $request)
     {
+        
+        return view('index');
+    }
+
+    public function store(Request $request)
+    {
+
+        if ($request->hasFile('attach'))
+        {
+            $file = Input::file('attach');
+
+            $content =  file_get_contents($file);
+
+            $search = array("\'8a", "\'d0", "\'c8", "\'c6", "\'8e", "\'9a", "\'f0", "\'e8", "\'e6", "\'9e");
+            $replace = array("S~", "D~", "C^", "C~", "Z~", "s~", "d~", "c^", "c~", "z~");
+
+            $textForParser = str_replace($search, $replace, $content);
+
+            return $textForParser;
+        }
+    }
+
+
+    public function show()
+    {
+
         $documentPath = public_path('uploads/sample.rtf');
 
         $reader = new StreamReader($documentPath);
@@ -44,13 +71,7 @@ class MainController extends Controller
 
         $parser = new DocumentParser($text, $rules);
 
-        return view('index', compact('parser')); 
-    }
-
-    public function getUpload()
-    {
-
-        return view('upload');
+        return view('table', compact('parser'));
 
     }
 }
