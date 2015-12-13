@@ -12,18 +12,22 @@ use Input;
 
 class MainController extends Controller
 {
-    public function index(Request $request)
+    public function getIndex(Request $request)
     {
         
         return view('index');
     }
 
-    public function store(Request $request)
+    public function postIndex(Request $request)
     {
 
         if ($request->hasFile('attach'))
         {
             $file = Input::file('attach');
+
+            $filename = str_replace('.' . $file->getClientOriginalExtension(), null, $file->getClientOriginalName());
+
+            dd($file);
 
             $content =  file_get_contents($file);
 
@@ -32,12 +36,12 @@ class MainController extends Controller
 
             $textForParser = str_replace($search, $replace, $content);
 
-            return $textForParser;
+            file_put_contents('uploads/sample.rtf', $textForParser);
         }
+        return redirect('show');
     }
 
-
-    public function show()
+    public function getShow()
     {
 
         $documentPath = public_path('uploads/sample.rtf');
@@ -48,9 +52,15 @@ class MainController extends Controller
 
         $text = $document->extractText();
 
+        $search = array("S~", "D~", "C^", "C~", "Z~", "s~", "d~", "c^", "c~", "z~");
+        $replace = array("Š", "Đ", "Č", "Ć", "Ž", "š", "đ", "č", "ć", "ž");
+
+        $text = str_replace($search, $replace, $text);
+
+
         $rules = [
             'order_for' => 'JP BVK Nalog za',
-            'read_date' => 'oèitavanje/proveru Datum:',
+            'read_date' => 'očitavanje/proveru Datum:',
             'issued_by' => 'Nalogodavac:',
             'campaign_id' => 'ID kampanje:',
             'reading_number' => 'Ocitavanje br:',
