@@ -72,7 +72,6 @@ class MainController extends Controller
                 'issue' => 'Stanje brojila:',
                 'idmm_' => ' *',
                 'endless_gliberish_string' => 'Fabricki broj:',
-                
             ];
 
             $parser = new DocumentParser($text, $rules);
