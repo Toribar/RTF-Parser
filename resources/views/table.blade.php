@@ -12,10 +12,10 @@
 			<th>Broj</th>
 			<th>Mesto</th>
 			<th>Datum izdavanja naloga</th>
-			<th>Sifra naloga</th>
+			<th>Šifra naloga</th>
 			<th>Tip naloga</th>
-			<th>Nalog izvrsen?</th>
-			<th>Datum izvrsavanja</th>
+			<th>Nalog izvršen?</th>
+			<th>Datum izvršavanja</th>
 		</tr>
 	</thead>
 
@@ -25,17 +25,21 @@
 				<td>1</td>
 				<td>{{ $document->idmm }}</td>
 				<td>{{ $document->customer_name }}</td>
-				<td>{{ $document->customer_address }}</td>
-				<td>@{{ $parser->get('number') }}</td>
-				<td>@{{ $parser->get('place') }}</td>
-				<td>@{{ $parser->get('read_date') }}</td>
-				<td>{{ $document->filename }}</td>
-				<td>@{{ $parser->get('issue') }}</td>
+				<td>{{ $document->customer_address_street }}</td>
+				<td>{{ $document->customer_address_number }}</td>
+				<td>{{ $document->customer_address_location }}</td>
+				<td>{{ $document->issued_on }}</td>
+				<td>{{ $document->issue_code }}</td>
+				<td>{{ $document->issue_type }}</td>
 				<td>Da/Ne?</td>
 				<td>/</td>
 			</tr>
 		@endforeach
 	</tbody>
 </table>	
+<br>
+<br>
+<a href="{{ url('/') }}" class="btn btn-info">Dodaj Nalog</a>
+
 
 @stop

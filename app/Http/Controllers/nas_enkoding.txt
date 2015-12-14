@@ -9,3 +9,13 @@
 "č" => "\'e8" c^
 "ć" => "\'e6" c~
 "ž" => "\'9e" z~
+
+$table->integer('idmm')->unsigned(); //ne moze da ide u minus
+            $table->string('customer_name');
+            $table->string('customer_address_street');
+            $table->string('customer_address_number');
+            $table->string('customer_address_location');
+            $table->string('issue_code');
+            $table->string('issue_type');
+            $table->date('issued_on');
+            $table->text('document');

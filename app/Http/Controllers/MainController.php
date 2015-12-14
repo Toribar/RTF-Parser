@@ -80,8 +80,11 @@ class MainController extends Controller
             Document::create([
                 'idmm' => $parser->get('idmm'),
                 'customer_name' => $parser->get('costumer'),
-                'customer_address' => $parser->get('place'),
-                'filename' => $filename,
+                'customer_address_street' => $parser->get('street'),
+                'customer_address_number' => $parser->get('number'),
+                'customer_address_location' => $parser->get('place'),
+                'issue_code' => $filename,
+                'issue_type' => $parser->get('issue'),
                 'issued_on' => Carbon::parse($parser->get('read_date')),
                 'document' => $text,
             ]);

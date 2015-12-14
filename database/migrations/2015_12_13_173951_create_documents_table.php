@@ -14,10 +14,13 @@ class CreateDocumentsTable extends Migration
     {
         Schema::create('documents', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('idmm')->unsigned();
+            $table->integer('idmm')->unsigned(); //ne moze da ide u minus
             $table->string('customer_name');
-            $table->string('customer_address');
-            $table->string('filename');
+            $table->string('customer_address_street');
+            $table->string('customer_address_number');
+            $table->string('customer_address_location');
+            $table->string('issue_code');
+            $table->string('issue_type');
             $table->date('issued_on');
             $table->text('document');
             $table->timestamps();
