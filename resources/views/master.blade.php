@@ -10,16 +10,14 @@
 		<style type="text/css">
 			body {padding-top: 70px; }
 		</style>
-		<title></title>
+		<title>Praćenje naloga</title>
 	</head>
 
 	<body>
-		<div class="container">
-			<div class="row">
-				<div class="col-md-10">
-					@yield('content')
-				</div>
-			</div>
+		<div class="container-fluid">
+			
+			@yield('content')
+				
 		</div>
 	</body>
 
