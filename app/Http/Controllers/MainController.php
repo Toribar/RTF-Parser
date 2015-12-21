@@ -4,20 +4,22 @@ namespace App\Http\Controllers;
 
 use Carbon\Carbon;
 use App\Document;
-use RTFLex\io\StreamReader;
-use RTFLex\tree\RTFDocument;
+use App\Parser;
 use Illuminate\Http\Request;
-use App\Parsers\DocumentParser;
-use RTFLex\tokenizer\RTFTokenizer;
 use App\Http\Controllers\Controller;
 use Input;
+use RTFLex\io\StreamReader;
+use RTFLex\tree\RTFDocument;
+use App\Parsers\DocumentParser;
+use RTFLex\tokenizer\RTFTokenizer;
 
 class MainController extends Controller
 {
     public function getIndex(Request $request)
     {
-        
-        return view('index');
+        $documents = Document::all();
+
+        return view('index', compact('documents'));
     }
 
     public function postIndex(Request $request)
@@ -28,8 +30,6 @@ class MainController extends Controller
             $file = Input::file('attach');
 
             $filename = str_replace('.' . $file->getClientOriginalExtension(), null, $file->getClientOriginalName());
-
-
 
             $content =  file_get_contents($file);
 
@@ -53,7 +53,6 @@ class MainController extends Controller
 
             $text = str_replace($search, $replace, $text);
 
-
             $rules = [
                 'order_for' => 'JP BVK Nalog za',
                 'read_date' => 'očitavanje/proveru Datum:',
@@ -75,28 +74,32 @@ class MainController extends Controller
             ];
 
             $parser = new DocumentParser($text, $rules);
-
+            
+            //database
             Document::create([
-                'idmm' => $parser->get('idmm'),
-                'customer_name' => $parser->get('costumer'),
-                'customer_address_street' => $parser->get('street'),
-                'customer_address_number' => $parser->get('number'),
+                'idmm' =>                      $parser->get('idmm'),
+                'customer_name' =>             $parser->get('costumer'),
+                'customer_address_street' =>   $parser->get('street'),
+                'customer_address_number' =>   $parser->get('number'),
                 'customer_address_location' => $parser->get('place'),
-                'issue_code' => $filename,
-                'issue_type' => $parser->get('issue'),
-                'issued_on' => Carbon::parse($parser->get('read_date')),
-                'document' => $text,
+                'issue_code' =>                $filename,
+                'issue_type' =>                $parser->get('issue'),
+                'issued_on' =>                 Carbon::parse($parser->get('read_date')),
+                'document' =>                  $text,
             ]);
+            
         }
-        return redirect('show');
+    
+        return redirect('index');
     }
 
-    public function getShow()
+    public function getCustomer()
     {
 
-        $documents = Document::all();
 
-        return view('table', compact('documents'));
+        return view('customers');
 
     }
+
+    
 }
