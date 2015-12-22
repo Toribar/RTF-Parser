@@ -17,6 +17,29 @@
 		</h2>
     </div>
 
+    <div class="col-md-4">
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				Nalog izdat 21.12.2012
+			</div>
+			<div class="panel-body">
+				Tip naloga: Bazdarenje<br>
+				Nalog izvrsen: Da<br>
+				Datum izvrsavanja: 21.21.2012<br>
+			</div>
+		</div>
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				Nalog izdat 21.12.2013
+			</div>
+			<div class="panel-body">
+				Tip naloga: Puklo staklo<br>
+				Nalog izvrsen: Da<br>
+				Datum izvrsavanja: 21.21.2013<br>
+			</div>
+		</div>
+	</div>
+
 </div>
 
 @stop

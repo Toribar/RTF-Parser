@@ -74,6 +74,7 @@ class MainController extends Controller
             ];
 
             $parser = new DocumentParser($text, $rules);
+            dd($parser);
             
             //database
             Document::create([
@@ -93,13 +94,7 @@ class MainController extends Controller
         return redirect('index');
     }
 
-    public function getCustomer()
-    {
-
-
-        return view('customers');
-
-    }
+  
 
     
 }

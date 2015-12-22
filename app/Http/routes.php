@@ -10,5 +10,8 @@
 | and give it the controller to call when that URI is requested.
 |
 */
+Route::controller('customer', 'CustomerController');
 
 Route::controller('/', 'MainController');
+
+
